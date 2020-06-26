@@ -1,5 +1,6 @@
 package com.example.jetpacksample.view
 
+import android.opengl.Visibility
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -37,6 +38,14 @@ class ListFragment : Fragment() {
         dogsList_rv.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = dogsListAdapter
+        }
+
+        refreshLayout.setOnRefreshListener {
+            dogsList_rv.visibility = View.GONE
+            listError_tv.visibility = View.GONE
+            loading_pb.visibility = View.VISIBLE
+            viewModel.refresh()
+            refreshLayout.isRefreshing = false
         }
 
         observeViewModel()

@@ -3,6 +3,7 @@ package com.example.jetpacksample.view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jetpacksample.R
 import com.example.jetpacksample.model.DogBreed
@@ -30,5 +31,9 @@ class DogsListAdapter(val dogsList: ArrayList<DogBreed>):
     override fun onBindViewHolder(holder: DogViewHolder, position: Int) {
         holder.view.dogName_tv.text = dogsList[position].dogBreed
         holder.view.lifespan_tv.text = dogsList[position].lifeSpan
+
+        holder.view.setOnClickListener {
+            Navigation.findNavController(it).navigate(ListFragmentDirections.actionListFragmentToDetailFragment())
+        }
     }
 }
