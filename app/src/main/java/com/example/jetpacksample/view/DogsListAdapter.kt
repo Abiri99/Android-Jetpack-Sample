@@ -7,6 +7,8 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jetpacksample.R
 import com.example.jetpacksample.model.DogBreed
+import com.example.jetpacksample.util.getProgressDrawable
+import com.example.jetpacksample.util.loadImage
 import kotlinx.android.synthetic.main.item_dog.view.*
 
 class DogsListAdapter(val dogsList: ArrayList<DogBreed>):
@@ -31,6 +33,7 @@ class DogsListAdapter(val dogsList: ArrayList<DogBreed>):
     override fun onBindViewHolder(holder: DogViewHolder, position: Int) {
         holder.view.dogName_tv.text = dogsList[position].dogBreed
         holder.view.lifespan_tv.text = dogsList[position].lifeSpan
+        holder.view.dog_iv.loadImage(dogsList[position].imageUrl, getProgressDrawable(holder.view.dog_iv.context))
 
         holder.view.setOnClickListener {
             Navigation.findNavController(it).navigate(ListFragmentDirections.actionListFragmentToDetailFragment())
