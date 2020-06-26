@@ -21,7 +21,7 @@ class DogsListAdapter(val dogsList: ArrayList<DogBreed>):
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DogViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val view: View = inflater.inflate(R.layout.item_dog, parent)
+        val view: View = inflater.inflate(R.layout.item_dog, parent, false)
         return DogViewHolder(view)
     }
 

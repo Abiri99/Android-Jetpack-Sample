@@ -52,7 +52,10 @@ class ListFragment : Fragment() {
 
         viewModel.dogsLoadError.observe(this, Observer { isError ->
             isError?.let {
-                listError_tv.visibility = View.VISIBLE
+                if (it)
+                    listError_tv.visibility = View.VISIBLE
+                else
+                    listError_tv.visibility = View.GONE
             }
         })
 
