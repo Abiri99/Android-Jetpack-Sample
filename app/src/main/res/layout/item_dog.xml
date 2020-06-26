@@ -11,6 +11,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
+            android:src="@drawable/dog"
             android:padding="4dp"/>
         
         <LinearLayout
@@ -32,6 +33,7 @@
                 android:id="@+id/lifespan_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="Lifespan"
                 style="@style/Text"/>
 
         </LinearLayout>
