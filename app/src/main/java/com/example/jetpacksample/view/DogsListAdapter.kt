@@ -36,7 +36,9 @@ class DogsListAdapter(val dogsList: ArrayList<DogBreed>):
         holder.view.dog_iv.loadImage(dogsList[position].imageUrl, getProgressDrawable(holder.view.dog_iv.context))
 
         holder.view.setOnClickListener {
-            Navigation.findNavController(it).navigate(ListFragmentDirections.actionListFragmentToDetailFragment())
+            val action: ListFragmentDirections.ActionListFragmentToDetailFragment = ListFragmentDirections.actionListFragmentToDetailFragment()
+            action.dogUuid = dogsList[position].uuid
+            Navigation.findNavController(it).navigate(action)
         }
     }
 }

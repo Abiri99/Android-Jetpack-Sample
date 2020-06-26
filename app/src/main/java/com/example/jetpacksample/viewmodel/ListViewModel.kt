@@ -1,12 +1,14 @@
 package com.example.jetpacksample.viewmodel
 
 import android.app.Application
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.jetpacksample.model.DogBreed
 import com.example.jetpacksample.model.DogDao
 import com.example.jetpacksample.model.DogDatabase
 import com.example.jetpacksample.model.DogsApiService
+import com.example.jetpacksample.util.SharedPreferencesHelper
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableObserver
@@ -16,6 +18,9 @@ import kotlinx.coroutines.launch
 
 class ListViewModel(application: Application): BaseViewModel(application) {
 
+    private var prefHelper = SharedPreferencesHelper(getApplication())
+    private var refreshTime = 5 * 60 * 1000 * 1000 * 1000L
+
     private val dogsService: DogsApiService = DogsApiService()
     private val disposable = CompositeDisposable()
 
@@ -24,10 +29,28 @@ class ListViewModel(application: Application): BaseViewModel(application) {
     val loading = MutableLiveData<Boolean>()
 
     fun refresh() {
+        val updateTime = prefHelper.getUpdateTime()
+        if (updateTime != null && updateTime != 0L && System.nanoTime() - updateTime < refreshTime) {
+            fetchFromDatabase()
+        } else  {
+            fetchFromRemote()
+        }
+    }
+
+    fun refreshBypassCache() {
         fetchFromRemote()
     }
 
-    // Could be in a class implementing repository paattern
+    private fun fetchFromDatabase() {
+        loading.value = true
+        launch {
+            val dogs: List<DogBreed> = DogDatabase(getApplication()).dogDao().getAllDogs()
+            dogsRetrieved(dogs)
+            Toast.makeText(getApplication(), "Dogs retrieved from database", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    // Could be in a class implementing repository pattern
     private fun fetchFromRemote() {
         loading.value = true
         disposable.add(
@@ -67,6 +90,7 @@ class ListViewModel(application: Application): BaseViewModel(application) {
             }
             dogsRetrieved(list)
         }
+        prefHelper.saveUpdateTime(System.nanoTime())
     }
 
     override fun onCleared() {

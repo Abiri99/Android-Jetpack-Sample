@@ -11,6 +11,8 @@ import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
 
 import com.example.jetpacksample.R
+import com.example.jetpacksample.util.getProgressDrawable
+import com.example.jetpacksample.util.loadImage
 import com.example.jetpacksample.viewmodel.DetailViewModel
 import kotlinx.android.synthetic.main.fragment_detail.*
 
@@ -30,12 +32,12 @@ class DetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProviders.of(this).get(DetailViewModel::class.java)
-        viewModel.fetch()
-
         arguments?.let {
             dogUuid = DetailFragmentArgs.fromBundle(it).dogUuid
         }
+
+        viewModel = ViewModelProviders.of(this).get(DetailViewModel::class.java)
+        viewModel.fetch(dogUuid)
 
         observeViewModel()
     }
@@ -47,6 +49,7 @@ class DetailFragment : Fragment() {
                 dogPurpose_tv.text = it.bredFor
                 dogTemperament_tv.text = it.temperament
                 dogLifespan_tv.text = it.lifeSpan
+                context?.let { dog_iv.loadImage(dog.imageUrl, getProgressDrawable(it)) }
             }
         })
     }
