@@ -16,7 +16,25 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="3"/>
+            android:layout_weight="3"
+            android:padding="4dp"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/dogName_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DogName"
+                style="@style/Title"/>
+
+            <TextView
+                android:id="@+id/lifespan_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Text"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 </layout>
