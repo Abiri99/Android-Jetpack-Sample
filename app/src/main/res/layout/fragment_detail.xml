@@ -7,11 +7,15 @@
         <variable
             name="dog"
             type="com.example.jetpacksample.model.DogBreed" />
+        <variable
+            name="palette"
+            type="com.example.jetpacksample.model.DogPalette" />
     </data>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@{palette.color}"
         tools:context=".view.DetailFragment">
 
         <ImageView

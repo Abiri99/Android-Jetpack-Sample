@@ -60,6 +60,7 @@ class ListViewModel(application: Application): BaseViewModel(application) {
                 .subscribeWith(object: DisposableSingleObserver<List<DogBreed>>() {
                     override fun onSuccess(dogList: List<DogBreed>) {
                         storeDogsLocally(dogList)
+                        Toast.makeText(getApplication(), "Dogs retrieved from backend", Toast.LENGTH_SHORT).show()
                     }
 
                     override fun onError(e: Throwable) {
