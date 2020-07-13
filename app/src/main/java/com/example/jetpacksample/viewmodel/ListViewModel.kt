@@ -3,7 +3,6 @@ package com.example.jetpacksample.viewmodel
 import android.app.Application
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.jetpacksample.model.DogBreed
 import com.example.jetpacksample.model.DogDao
 import com.example.jetpacksample.model.DogDatabase
@@ -12,10 +11,10 @@ import com.example.jetpacksample.util.NotificationsHelper
 import com.example.jetpacksample.util.SharedPreferencesHelper
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.observers.DisposableObserver
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.launch
+import java.lang.NumberFormatException
 
 class ListViewModel(application: Application): BaseViewModel(application) {
 
@@ -30,11 +29,23 @@ class ListViewModel(application: Application): BaseViewModel(application) {
     val loading = MutableLiveData<Boolean>()
 
     fun refresh() {
+        checkCacheDuration()
         val updateTime = prefHelper.getUpdateTime()
         if (updateTime != null && updateTime != 0L && System.nanoTime() - updateTime < refreshTime) {
             fetchFromDatabase()
         } else  {
             fetchFromRemote()
+        }
+    }
+
+    private fun checkCacheDuration() {
+        val cachePreference: String? = prefHelper.getCacheDuration()
+
+        try {
+            val cachePreferenceInt = cachePreference?.toInt() ?: 5 * 60
+            refreshTime = cachePreferenceInt.times(1000 * 1000 * 1000L)
+        } catch (e: NumberFormatException) {
+            e.printStackTrace()
         }
     }
 
