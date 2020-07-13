@@ -8,6 +8,7 @@ import com.example.jetpacksample.model.DogBreed
 import com.example.jetpacksample.model.DogDao
 import com.example.jetpacksample.model.DogDatabase
 import com.example.jetpacksample.model.DogsApiService
+import com.example.jetpacksample.util.NotificationsHelper
 import com.example.jetpacksample.util.SharedPreferencesHelper
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -61,6 +62,7 @@ class ListViewModel(application: Application): BaseViewModel(application) {
                     override fun onSuccess(dogList: List<DogBreed>) {
                         storeDogsLocally(dogList)
                         Toast.makeText(getApplication(), "Dogs retrieved from backend", Toast.LENGTH_SHORT).show()
+                        NotificationsHelper(getApplication()).createNotification()
                     }
 
                     override fun onError(e: Throwable) {
